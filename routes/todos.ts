@@ -18,4 +18,23 @@ router.post("/todo", (req, res, next) => {
   res.status(201).json({ message: "todo added successfully", todos: todos });
 });
 
+router.put("/todo/:todoId", (req, res, next) => {
+  const selectedTodoId = req.params.todoId;
+  const selectedTodoIndex = todos.findIndex(
+    (todoItem) => todoItem.id === selectedTodoId
+  );
+
+  if (selectedTodoIndex >= 0) {
+    todos[selectedTodoIndex] = {
+      id: todos[selectedTodoIndex].id,
+      text: req.body.text,
+    };
+    return res.json({
+      message: "todo updated!",
+      todo: todos[selectedTodoIndex],
+    });
+  }
+  res.status(404).json({ message: "could not find todo with that id" });
+});
+
 export default router;
