@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Todo } from "../models/todo";
 
-const todos: Todo[] = [];
+let todos: Todo[] = [];
 
 const router = Router();
 
@@ -35,6 +35,12 @@ router.put("/todo/:todoId", (req, res, next) => {
     });
   }
   res.status(404).json({ message: "could not find todo with that id" });
+});
+
+router.delete("/todo/:todoId", (req, res, next) => {
+  const selectedTodoId = req.params.todoId;
+  todos = todos.filter((todoItem) => todoItem.id !== selectedTodoId);
+  res.status(200).json({ message: "todo deleted!", todos: todos });
 });
 
 export default router;
